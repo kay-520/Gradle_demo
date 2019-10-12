@@ -1,0 +1,42 @@
+plugins {
+    id 'org.springframework.boot' version '2.0.6.RELEASE' apply false
+    id 'io.spring.dependency-management' version '1.0.8.RELEASE' apply false
+}
+
+allprojects {
+    group = 'com.digitalchina.sc.demo'
+    version = '0.0.1-SNAPSHOT'
+}
+
+subprojects {
+
+    apply plugin: 'java'
+    apply plugin: 'java-library'
+    apply plugin: 'io.spring.dependency-management'
+    apply plugin: 'org.springframework.boot'
+
+    repositories {
+        mavenLocal()
+        maven { url 'http://maven.aliyun.com/nexus/content/groups/public' }
+        mavenCentral()
+    }
+
+    dependencies {
+        implementation 'org.slf4j:slf4j-api:1.7.25'
+        implementation 'org.springframework.boot:spring-boot-starter-actuator'
+        compileOnly 'org.projectlombok:lombok'
+//        annotationProcessor 'org.projectlombok:lombok'
+        compileOnly 'org.mapstruct:mapstruct-processor:1.2.0.Final'
+        compileOnly 'org.springframework.boot:spring-boot-configuration-processor'
+    }
+
+    sourceCompatibility = '1.8'
+
+    configurations {
+        all*.exclude module : 'spring-boot-starter-logging'
+    }
+
+    tasks.withType(JavaCompile) {
+        options.encoding = 'UTF-8'
+    }
+}

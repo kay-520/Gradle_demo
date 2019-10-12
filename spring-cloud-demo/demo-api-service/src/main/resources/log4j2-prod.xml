@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Configuration status="WARN">
+    <Properties>
+        <!-- 文件输出格式 -->
+        <property name="pattern">project %d{yyyy-MM-dd HH:mm:ss} %-5level [%thread] %c [%L] -| %msg%n%ex</property>
+        <property name="logpath">../logs</property>
+        <property name="logname">xxproject</property>
+    </Properties>
+    <Appenders>
+        <Console name="console" target="system_out">
+        	<ThresholdFilter level="DEBUG" onMatch="ACCEPT" onMismatch="DENY"/>
+            <PatternLayout pattern="${pattern}"/>
+        </Console>
+        <!-- info日志级别 -->
+        <RollingFile name="info_file" fileName="${logpath}/${logname}-info.log" 
+        	filePattern="${logpath}/${logname}-info-%d{yyyy-MM-dd}.log">
+        	<Filters>
+        		<ThresholdFilter level="WARN" onMatch="DENY" onMismatch="NEUTRAL"/>
+        		<ThresholdFilter level="INFO" onMatch="ACCEPT" onMismatch="DENY"/>
+        	</Filters>
+        	<Policies>
+        		<SizeBasedTriggeringPolicy size="20MB"/>
+        		<TimeBasedTriggeringPolicy interval="1"/>
+        	</Policies>
+        	<PatternLayout pattern="${pattern}"/>
+        	<DefaultRolloverStrategy max="30"/>
+        </RollingFile>
+        <!-- error日志 -->
+        <RollingFile name="error_file" fileName="${logpath}/${logname}-error.log"
+                     filePattern="${logpath}/${logname}-error-%d{yyyy-MM-dd}.log">
+            <PatternLayout pattern="${pattern}"/>
+            <Filters>
+        		<ThresholdFilter level="ERROR" onMatch="ACCEPT" onMismatch="DENY"/>
+        	</Filters>
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+            </Policies>
+            <DefaultRolloverStrategy max="30"/>
+        </RollingFile>
+        <!-- error日志写入到kafka中 -->
+       <Kafka name="kafka" topic="errorlog" syncSend="false">
+        	<PatternLayout pattern="${pattern}"/>
+        	<Filters>
+        		<ThresholdFilter level="ERROR" onMatch="ACCEPT" onMismatch="DENY"/>
+        	</Filters>
+        	<Property name ="bootstrap.servers">172.16.50.217:9092</Property>
+			<Property name ="retries">3</Property> 
+			<Property name ="linger.ms">1000</Property>
+			<Property name ="buffer.memory">10485760</Property> 
+        </Kafka>
+        <!-- 配置异步写日志 -->
+        <Async name="Async">
+        	<AppenderRef ref="info_file"/>
+        	<AppenderRef ref="error_file"/>
+        	<AppenderRef ref="kafka"/>
+        </Async>
+    </Appenders>
+    
+    <Loggers>
+    	<logger name="com.digitalchina.log" level="info">
+    		<AppenderRef ref="user_info_file"/>
+    	</logger>
+        <Root level="error">
+            <AppenderRef ref="console"/>
+            <AppenderRef ref="info_file"/>
+        	<AppenderRef ref="error_file"/>
+        	<AppenderRef ref="kafka"/>
+        </Root>
+    </Loggers>
+</Configuration>  

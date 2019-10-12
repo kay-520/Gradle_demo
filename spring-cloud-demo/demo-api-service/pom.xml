@@ -1,0 +1,157 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.digitalchina.sc.demo</groupId>
+    <artifactId>parent</artifactId>
+    <version>${revision}</version>
+  </parent>
+  <artifactId>demo-api-service</artifactId>
+  <description>微服务，保持无状态</description>
+  <packaging>war</packaging>
+  
+  <dependencies>
+  	<dependency>
+  		<groupId>com.digitalchina.sc.demo</groupId>
+  		<artifactId>demo-common</artifactId>
+  		<version>${project.version}</version>
+  	</dependency>
+  	<!-- 采用log4j2作为日志系统 -->
+  	<dependency>
+  		<groupId>org.springframework.boot</groupId>
+  		<artifactId>spring-boot-starter</artifactId>
+  		<exclusions>
+  			<exclusion>
+  				<groupId>org.springframework.boot</groupId>
+  				<artifactId>spring-boot-starter-logging</artifactId>
+  			</exclusion>
+  		</exclusions>
+  	</dependency>
+  	<dependency>
+  		<groupId>org.springframework.boot</groupId>
+  		<artifactId>spring-boot-starter-log4j2</artifactId>
+  	</dependency>
+  	<dependency>
+  		<groupId>org.springframework.boot</groupId>
+  		<artifactId>spring-boot-starter-cache</artifactId>
+  	</dependency>
+  	<dependency>
+  		<groupId>org.springframework.boot</groupId>
+  		<artifactId>spring-boot-starter-data-redis</artifactId>
+  	</dependency>
+  	<!-- 注册中心 -->
+  	<dependency>
+  		<groupId>org.springframework.cloud</groupId>
+  		<artifactId>spring-cloud-starter-consul-discovery</artifactId>
+  	</dependency>
+  	<!-- feign远程调用 ，如果此微服务需要调用其他微服务就配置上-->
+  	<dependency>
+  		<groupId>org.springframework.cloud</groupId>
+  		<artifactId>spring-cloud-starter-openfeign</artifactId>
+  	</dependency>
+  	<!-- springboot admin -->
+  	<dependency>
+  		<groupId>de.codecentric</groupId>
+  		<artifactId>spring-boot-admin-starter-client</artifactId>
+  		<version>${springboot-admin.version}</version>
+  	</dependency>
+  	<!-- mysql驱动 -->
+  	<dependency>
+  		<groupId>mysql</groupId>
+  		<artifactId>mysql-connector-java</artifactId>
+  		<scope>runtime</scope>
+  	</dependency>
+  	<!-- druid -->
+  	<dependency>
+  		<groupId>com.alibaba</groupId>
+  		<artifactId>druid-spring-boot-starter</artifactId>
+  		<version>${druid-starter.version}</version>
+  	</dependency>
+  	<!-- mybatis plus -->
+  	<dependency>
+  		<groupId>com.baomidou</groupId>
+  		<artifactId>mybatis-plus-boot-starter</artifactId>
+  		<version>${mybatis-plus.version}</version>
+  	</dependency>
+  	<dependency>
+  		<groupId>com.alibaba</groupId>
+  		<artifactId>fastjson</artifactId>
+  		<version>${fastjson.version}</version>
+  	</dependency>
+  	<!-- swagger2 -->
+  	<dependency>
+  		<groupId>io.springfox</groupId>
+  		<artifactId>springfox-swagger2</artifactId>
+  		<version>${swagger.version}</version>
+  	</dependency>
+  	<dependency>
+  		<groupId>io.springfox</groupId>
+  		<artifactId>springfox-swagger-ui</artifactId>
+  		<version>${swagger.version}</version>
+  	</dependency>
+  	<dependency>
+  		<groupId>dom4j</groupId>
+  		<artifactId>dom4j</artifactId>
+  	</dependency>
+  	<dependency>
+  		<groupId>com.fasterxml.jackson.jaxrs</groupId>
+  		<artifactId>jackson-jaxrs-xml-provider</artifactId>
+  	</dependency>
+  </dependencies>
+  
+  <build>
+  	<plugins>
+  		<plugin>
+  			<groupId>org.springframework.boot</groupId>
+  			<artifactId>spring-boot-maven-plugin</artifactId>
+  		</plugin>
+  		<plugin>
+  			<artifactId>maven-war-plugin</artifactId>
+  			<configuration>
+  				<failOnMissingWebXml>false</failOnMissingWebXml>
+  			</configuration>
+  		</plugin>
+  		<!-- docker镜像打包推送仓库 -->
+  		<!-- <plugin>
+  			<groupId>com.spotify</groupId>
+  			<artifactId>docker-maven-plugin</artifactId>
+  			<version>1.2.0</version>
+  			<configuration>
+  				<imageName>${docker.image.prefix}/${project.artifactId}</imageName>
+  				<dockerDirectory>${project.basedir}/src/main/docker</dockerDirectory>
+  				<resources>
+  					<resource>
+  						<targetPath>/</targetPath>
+  						<directory>${project.build.directory}</directory>
+  						<include>ROOT.war</include>
+  					</resource>
+  				</resources>
+  				<imageTags>
+  					<imageTag>${project.version}</imageTag>
+  					<imageTag>latest</imageTag>
+  				</imageTags>
+  			</configuration>
+  			<executions>
+  				<execution>
+  					<id>build-image</id>
+  					<phase>install</phase>
+  					<goals>
+  						<goal>build</goal>
+  					</goals>
+  				</execution>
+  				<execution>
+  					<id>push-image</id>
+  					<phase>install</phase>
+  					<goals>
+  						<goal>push</goal>
+  					</goals>
+  					<configuration>
+  						<serverId>harbor</serverId>
+  						<imageName>${docker.registry}/${project.artifactId}:${project.version}</imageName>
+  					</configuration>
+  				</execution>
+  			</executions>
+  		</plugin> -->
+  	</plugins>
+  	<finalName>ROOT</finalName>
+  </build>
+</project>

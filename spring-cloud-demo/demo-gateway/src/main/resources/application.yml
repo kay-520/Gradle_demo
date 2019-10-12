@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: demo-gateway
+  profiles:
+    active: dev   #设置使用哪个application环境，一般在tomcat下配置环境变量可覆盖此属性
+  #采用freemarker就开放下面的配置
+  freemarker:
+    request-context-attribute: request
+        

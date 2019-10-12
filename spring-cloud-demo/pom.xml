@@ -1,0 +1,109 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.digitalchina.sc.demo</groupId>
+  <artifactId>parent</artifactId>
+  <packaging>pom</packaging>
+  <version>${revision}</version>
+  
+  <!-- mvn属性设置，其他子模块引用此版本属性即可 -->
+  <properties>
+	   <revision>0.0.1-SNAPSHOT</revision>
+       <main.basedir>${basedir}</main.basedir>
+	   <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+       <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+       <java.version>1.8</java.version>
+       <maven.compiler.source>${java.version}</maven.compiler.source>
+       <maven.compiler.target>${java.version}</maven.compiler.target>
+ 	   <spring-boot.version>2.0.6.RELEASE</spring-boot.version>
+       <spring-cloud.version>Finchley.SR2</spring-cloud.version>
+       <lombok.version>1.18.10</lombok.version>
+       <!-- sitemesh -->
+       <sitemesh.version>3.0.1</sitemesh.version>
+       <!-- database -->
+       <druid-starter.version>1.1.10</druid-starter.version>
+       <!-- mybatis-plus -->
+       <mybatis-plus.version>2.3.3</mybatis-plus.version>
+       <!-- common tools -->
+       <commons-lang3.version>3.8.1</commons-lang3.version>
+       <commons-text.version>1.6</commons-text.version>
+       <guava.version>25.1-jre</guava.version>
+       <hutool.version>4.1.4</hutool.version>
+       <mapstruct.version>1.2.0.Final</mapstruct.version>
+       <fastjson.version>1.2.51</fastjson.version>
+       <easypoi.version>3.2.0</easypoi.version>
+       <!-- swagger -->
+       <swagger.version>2.9.2</swagger.version>
+       <springboot-admin.version>2.0.4</springboot-admin.version>
+       <!-- docker镜像配置 -->
+       <docker.registry>ip/project</docker.registry>
+       <docker.image.prefix>${docker.registry}</docker.image.prefix>
+  </properties>
+  
+  <!-- 依赖管理，主要对象 -->
+  <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring-boot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring-cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+  </dependencyManagement>
+  
+  <!-- 基础通用依赖 -->
+  <dependencies>
+        <!-- lombok插件 http://blog.didispace.com/java-lombok-1/, http://i.woblog.cn/2016/06/19/use-lombok/ -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct-processor</artifactId>
+            <version>${mapstruct.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <!-- log -->
+        <dependency>
+        	<groupId>org.slf4j</groupId>
+        	<artifactId>slf4j-api</artifactId>
+        </dependency>
+        <!-- springboot监测指标，后续为springboot admin以及注册服务提供可访问端点 -->
+        <dependency>
+		    <groupId>org.springframework.boot</groupId>
+		    <artifactId>spring-boot-starter-actuator</artifactId>
+		</dependency>
+  </dependencies>
+  	
+  <!-- 阿里的国内maven库镜像 -->
+  <repositories>
+        <repository>
+            <id>nexus-aliyun</id>
+            <name>Nexus aliyun</name>
+            <url>http://maven.aliyun.com/nexus/content/groups/public</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+  </repositories>
+  <modules>
+  	<module>demo-common</module>
+  	<module>demo-gateway</module>
+  	<module>demo-api-service</module>
+  </modules>
+</project>

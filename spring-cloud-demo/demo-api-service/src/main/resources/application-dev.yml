@@ -1,0 +1,50 @@
+#内嵌tomcat服务器监听端口
+server:
+  port: 8090
+  
+#spring
+spring:
+  #上传大小控制
+  servlet:
+    multipart:
+      max-file-size: 20MB
+  output.ansi.enable: always
+  #数据库连接配置
+  datasource:
+    url: jdbc:mysql://xx.xx.xx.xx:port/dbinstance?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true
+    username: username
+    password: pwd
+    driver-class-name: com.mysql.jdbc.Driver
+  #redis配置
+  redis:
+    database: 0
+    host: xx.xx.xx.xx
+    port: xxxx
+    jedis:
+      pool:
+        max-active: 8
+        max-idle: 8
+        max-wait: -1
+        min-idle: 0
+
+#注册中心配置
+  cloud:
+    consul:
+      host: xx.xx.xx.xx
+      port: xxxx
+      discovery:
+        #注册的服务名
+        serviceName: api-service
+        #健康检查，利用springboot的actuator来处理
+        healthCheckPath: /health
+        healthCheckInterval: 5s
+        
+#日志
+logging:
+  config: classpath:log4j2-dev.xml
+  
+#mybatis plus调试配置
+mybatis-plus:
+  global-config:
+    #刷新mapper调试,正式环境不要配置
+    refresh-mapper: true
